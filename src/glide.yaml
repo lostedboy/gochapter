@@ -1,0 +1,3 @@
+package: github.com/lostedboy/gochapter
+import:
+  - package: github.com/gorilla/mux

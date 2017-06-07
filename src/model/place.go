@@ -48,7 +48,6 @@ type Place struct {
 
 type PlaceCollection struct {
 	Items []Place
-
 }
 
 func (placeCollection *PlaceCollection) Add(place Place) {
