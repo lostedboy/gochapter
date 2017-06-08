@@ -2,10 +2,10 @@ package controller
 
 import (
 	"net/http"
+	"encoding/json"
 	"../model"
 	"../places"
-	httpFoundation "../http_foundation"
-	"encoding/json"
+	"../httpFoundation"
 )
 
 func SuggestionsAction(response http.ResponseWriter, request *http.Request) {
