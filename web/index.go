@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 	"github.com/gorilla/mux"
-	"../controller"
+	"gochapter/controller"
 )
 
 

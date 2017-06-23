@@ -2,12 +2,11 @@ INSTALLATION
 
 - Install dependencies
 ```bash
-cd ./src/
 glide up --quick -v
 ```
 - Run webserver
 ```bash
-go run ./src/web/index.go
+go run ./web/index.go
 ```
 
 USAGE

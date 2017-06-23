@@ -8,7 +8,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", path: "dist/scripts/apt-install.sh"
 
-  config.vm.synced_folder ".", "/vagrant", type: "nfs"
+  config.vm.synced_folder ".", "/vagrant/src/gochapter", type: "nfs"
 
   config.vm.hostname = "vagrant.loc"
 end

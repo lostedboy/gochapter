@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"sync"
-	"../model"
+	"gochapter/model"
 )
 
 const urlTemplate  = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyD7n4P7VjLkW5-mjPJVAl5YBT_JxL2gDR0&placeid=%s"

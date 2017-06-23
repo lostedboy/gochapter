@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"sync"
-	"../model"
+	"gochapter/model"
 )
 
 const autocompleteUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyD7n4P7VjLkW5-mjPJVAl5YBT_JxL2gDR0&types=(cities)&language=en&input=%s"

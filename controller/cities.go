@@ -3,9 +3,9 @@ package controller
 import (
 	"net/http"
 	"encoding/json"
-	"../model"
-	"../places"
-	"../httpFoundation"
+	"gochapter/model"
+	"gochapter/places"
+	"gochapter/httpFoundation"
 )
 
 func SuggestionsAction(response http.ResponseWriter, request *http.Request) {
