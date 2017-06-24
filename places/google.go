@@ -9,25 +9,25 @@ import (
 )
 
 func GetGoogleClient() (*maps.Client, error) {
-	var googleCLient *maps.Client
+	var googleClient *maps.Client
 
 	arguments, err := config.Parse()
 
 	if err != nil {
-		return googleCLient, errors.New("Google API key not set")
+		return googleClient, errors.New("Google API key not set")
 	}
 
-	googleCLient, err = maps.NewClient(maps.WithAPIKey(arguments.GoogleKey))
+	googleClient, err = maps.NewClient(maps.WithAPIKey(arguments.GoogleKey))
 
 	if err != nil {
-		return googleCLient, errors.New("Google client can not be created")
+		return googleClient, errors.New("Google client can not be created")
 	}
 
-	return googleCLient, nil
+	return googleClient, nil
 }
 
 func FetchAutocomplete(input string) ([]maps.AutocompletePrediction, error) {
-	googleCLient, err := GetGoogleClient()
+	googleClient, err := GetGoogleClient()
 
 	if err != nil {
 		return make([]maps.AutocompletePrediction, 0), err
@@ -39,7 +39,7 @@ func FetchAutocomplete(input string) ([]maps.AutocompletePrediction, error) {
 		Types : maps.AutocompletePlaceTypeCities,
 	}
 
-	result, err := googleCLient.PlaceAutocomplete(context.Background(), &autocompleteRequest)
+	result, err := googleClient.PlaceAutocomplete(context.Background(), &autocompleteRequest)
 
 	if err != nil {
 		return make([]maps.AutocompletePrediction, 0), err
@@ -52,7 +52,7 @@ func FetchPlacesInfo(placesIds []string)  ([]maps.PlaceDetailsResult, error) {
 	var places []maps.PlaceDetailsResult
 	var waitGroup sync.WaitGroup
 
-	googleCLient, err := GetGoogleClient()
+	googleClient, err := GetGoogleClient()
 
 	if err != nil {
 		return places, err
@@ -69,7 +69,7 @@ func FetchPlacesInfo(placesIds []string)  ([]maps.PlaceDetailsResult, error) {
 				Language : "en",
 			}
 
-			result, err := googleCLient.PlaceDetails(context.Background(), &detailsRequest)
+			result, err := googleClient.PlaceDetails(context.Background(), &detailsRequest)
 
 			if err != nil {
 				return
@@ -85,7 +85,7 @@ func FetchPlacesInfo(placesIds []string)  ([]maps.PlaceDetailsResult, error) {
 }
 
 func FetchDistanceMatrix(cities []string) ([]maps.DistanceMatrixElementsRow, error) {
-	googleCLient, err := GetGoogleClient()
+	googleClient, err := GetGoogleClient()
 
 	if err != nil {
 		return  make([]maps.DistanceMatrixElementsRow, 0) , err
@@ -97,7 +97,7 @@ func FetchDistanceMatrix(cities []string) ([]maps.DistanceMatrixElementsRow, err
 		Language : "en",
 	}
 
-	distanceMatrix, _ := googleCLient.DistanceMatrix(context.Background(), &distanceMatrixRequest)
+	distanceMatrix, _ := googleClient.DistanceMatrix(context.Background(), &distanceMatrixRequest)
 
 	return distanceMatrix.Rows, nil
 }
