@@ -84,6 +84,50 @@ func FetchPlacesInfo(placesIds []string)  ([]maps.PlaceDetailsResult, error) {
 	return places, nil
 }
 
-func FetchDistaceMatrix(origins []string)  {
-	
+func FetchDistanceMatrix(cities []string) ([]maps.DistanceMatrixElementsRow, error) {
+	googleCLient, err := GetGoogleClient()
+
+	if err != nil {
+		return  make([]maps.DistanceMatrixElementsRow, 0) , err
+	}
+
+	distanceMatrixRequest := maps.DistanceMatrixRequest{
+		Origins  : cities,
+		Destinations : cities,
+		Language : "en",
+	}
+
+	distanceMatrix, _ := googleCLient.DistanceMatrix(context.Background(), &distanceMatrixRequest)
+
+	return distanceMatrix.Rows, nil
+}
+
+func GetMappedDistanceMatrix(cities []string) (map[string]map[string]maps.Distance, error)  {
+	result := make(map[string]map[string]maps.Distance)
+
+	raws, err := FetchDistanceMatrix(cities)
+
+	if err != nil {
+		return result, err
+	}
+
+	for cityIndex, city := range cities {
+		result[city] = make(map[string]maps.Distance)
+
+		for rawIndex, raw := range raws {
+			if cityIndex != rawIndex {
+				continue
+			}
+
+			for elementIndex, element := range raw.Elements {
+				if (cityIndex == elementIndex) {
+					continue
+				}
+
+				result[city][cities[elementIndex]] = element.Distance
+			}
+		}
+	}
+
+	return result, nil
 }

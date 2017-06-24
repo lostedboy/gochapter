@@ -6,16 +6,19 @@ import (
 
 type Config struct {
 	GoogleKey  string `long:"key" description:"Google Maps API Key" required:"true"`
+	Arguments []string
 }
 
 func Parse() (*Config, error) {
 	var c Config
 
-	_, err := flags.NewParser(&c, flags.HelpFlag|flags.PassDoubleDash).Parse();
+	args, err := flags.NewParser(&c, flags.HelpFlag|flags.PassDoubleDash).Parse();
 
 	if err != nil {
 		return nil, err
 	}
+
+	c.Arguments = args
 
 	return &c, nil
 }
