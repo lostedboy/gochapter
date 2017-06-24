@@ -1,3 +1,6 @@
 package: gochapter
 import:
   - package: github.com/gorilla/mux
+  - package: github.com/jessevdk/go-flags
+  - package: googlemaps.github.io/maps
+  - package: golang.org/x/net/context

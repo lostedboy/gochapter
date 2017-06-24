@@ -3,32 +3,24 @@ package controller
 import (
 	"net/http"
 	"encoding/json"
-	"gochapter/model"
 	"gochapter/places"
 	"gochapter/httpFoundation"
 )
 
 func SuggestionsAction(response http.ResponseWriter, request *http.Request) {
-	var citySuggestion model.CitySuggestion
-
 	if request.URL.Query().Get("q") == "" {
-		httpFoundation.SendInternalServerErrorResponse(response, "search query is not provided")
+		httpFoundation.SendInternalServerErrorResponse(response, "Search query is not provided")
 		return
 	}
 
-	citySuggestion, err := places.FetchAutocomplete(request.URL.Query().Get("q"))
+	predictions, err := places.FetchAutocomplete(request.URL.Query().Get("q"))
 
 	if err != nil {
 		httpFoundation.SendInternalServerErrorResponse(response, err.Error())
 		return
 	}
 
-	if (citySuggestion.Status != "OK") {
-		httpFoundation.SendNotFoundResponse(response)
-		return
-	}
-
-	httpFoundation.SendJsonResponse(response, "ok", citySuggestion.Predictions)
+	httpFoundation.SendJsonResponse(response, "ok", predictions)
 }
 
 func InfoAction(response http.ResponseWriter, request *http.Request) {
@@ -43,12 +35,12 @@ func InfoAction(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	placeCollection, err := places.FetchPlacesInfo(placesRequest.Places)
+	placesArray, err := places.FetchPlacesInfo(placesRequest.Places)
 
 	if err != nil {
 		httpFoundation.SendInternalServerErrorResponse(response, err.Error())
 		return
 	}
 
-	httpFoundation.SendJsonResponse(response, "ok", placeCollection.All())
+	httpFoundation.SendJsonResponse(response, "ok", placesArray)
 }

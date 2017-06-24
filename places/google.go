@@ -1,47 +1,62 @@
 package places
 
 import (
-	"net/http"
-	"fmt"
-	"io/ioutil"
-	"encoding/json"
 	"errors"
 	"sync"
-	"gochapter/model"
+	"gochapter/config"
+	"googlemaps.github.io/maps"
+	"context"
 )
 
-const autocompleteUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyD7n4P7VjLkW5-mjPJVAl5YBT_JxL2gDR0&types=(cities)&language=en&input=%s"
-const placesUrl  = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyD7n4P7VjLkW5-mjPJVAl5YBT_JxL2gDR0&placeid=%s"
+func GetGoogleClient() (*maps.Client, error) {
+	var googleCLient *maps.Client
 
-func FetchAutocomplete(input string) (model.CitySuggestion, error) {
-	var citySuggestion model.CitySuggestion
-
-	resp, err := http.Get(fmt.Sprintf(autocompleteUrl, input))
+	arguments, err := config.Parse()
 
 	if err != nil {
-		return citySuggestion, errors.New("Error in fetching response from google")
+		return googleCLient, errors.New("Google API key not set")
 	}
 
-	defer resp.Body.Close()
-
-	result, err := ioutil.ReadAll(resp.Body)
+	googleCLient, err = maps.NewClient(maps.WithAPIKey(arguments.GoogleKey))
 
 	if err != nil {
-		return citySuggestion, errors.New("Error in reading response from google")
+		return googleCLient, errors.New("Google client can not be created")
 	}
 
-	err = json.Unmarshal(result, &citySuggestion)
-
-	if err != nil {
-		return citySuggestion, errors.New("Error in parsing google response")
-	}
-
-	return citySuggestion, nil
+	return googleCLient, nil
 }
 
-func FetchPlacesInfo(placesIds []string)  (*model.PlaceCollection, error) {
-	var places = new(model.PlaceCollection)
+func FetchAutocomplete(input string) ([]maps.AutocompletePrediction, error) {
+	googleCLient, err := GetGoogleClient()
+
+	if err != nil {
+		return make([]maps.AutocompletePrediction, 0), err
+	}
+
+	autocompleteRequest := maps.PlaceAutocompleteRequest{
+		Input : input,
+		Language : "en",
+		Types : maps.AutocompletePlaceTypeCities,
+	}
+
+	result, err := googleCLient.PlaceAutocomplete(context.Background(), &autocompleteRequest)
+
+	if err != nil {
+		return make([]maps.AutocompletePrediction, 0), err
+	}
+
+	return result.Predictions, nil
+}
+
+func FetchPlacesInfo(placesIds []string)  ([]maps.PlaceDetailsResult, error) {
+	var places []maps.PlaceDetailsResult
 	var waitGroup sync.WaitGroup
+
+	googleCLient, err := GetGoogleClient()
+
+	if err != nil {
+		return places, err
+	}
 
 	for _, placeId := range placesIds {
 		waitGroup.Add(1)
@@ -49,25 +64,26 @@ func FetchPlacesInfo(placesIds []string)  (*model.PlaceCollection, error) {
 		go func(placeId string) {
 			defer waitGroup.Done()
 
-			resp, err := http.Get(fmt.Sprintf(placesUrl, placeId))
+			detailsRequest := maps.PlaceDetailsRequest{
+				PlaceID  : placeId,
+				Language : "en",
+			}
+
+			result, err := googleCLient.PlaceDetails(context.Background(), &detailsRequest)
 
 			if err != nil {
 				return
 			}
 
-			defer resp.Body.Close()
-
-			result, err := ioutil.ReadAll(resp.Body)
-
-			var place model.Place
-
-			json.Unmarshal(result, &place)
-
-			places.Add(place)
+			places = append(places, result)
 		}(placeId)
 	}
 
 	waitGroup.Wait()
 
 	return places, nil
+}
+
+func FetchDistaceMatrix(origins []string)  {
+	
 }
