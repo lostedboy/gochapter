@@ -1,0 +1,30 @@
+-
+    id: 1
+    name: Lamborghini Gallardo
+    day_max_distance: 60000
+    type: 0
+    price_per_km: 500
+    rent_price: 30000
+    image: http://st.motortrend.com/uploads/sites/10/2015/09/2013-Lamborghini-Gallardo-LP-550-2-Valentino-Balboni-Front-Three-Quarters.jpg
+    createdAt: 2016-01-01 12:30:12
+    updatedAt: 2016-01-01 12:30:12
+-
+    id: 2
+    name: Tesla Model 3
+    day_max_distance: 50000
+    type: 1
+    price_per_km: 0
+    rent_price: 25000
+    image: https://www.tesla.com/tesla_theme/assets/img/model3/section-initial-touch.jpg?20161116
+    createdAt: 2016-01-01 12:30:12
+    updatedAt: 2016-01-01 12:30:12
+-
+    id: 3
+    name: Lada Vesta
+    day_max_distance: 30000
+    type: 0
+    price_per_km: 600
+    rent_price: 15000
+    image: http://www.lada.ru/lp/mmas2016/VestaSport/index_files/vesta_sport_585.jpg
+    createdAt: 2016-01-01 12:30:12
+    updatedAt: 2016-01-01 12:30:12

@@ -1,15 +1,15 @@
 package main
 
 import (
-	"gochapter/config"
-	"gochapter/places"
 	"fmt"
+	"flag"
+	"gochapter/places"
 )
 
 func main() {
-	cmdConfig, _ := config.Parse()
+	flag.Parse()
 
-	matrix, err := places.GetMappedDistanceMatrix(cmdConfig.Arguments)
+	matrix, err := places.GetMappedDistanceMatrix(flag.Args())
 
 	if err != nil {
 		fmt.Printf("%+v\n", err)

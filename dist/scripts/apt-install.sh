@@ -17,6 +17,14 @@ echo -e "\n--- Install utilities ---\n"
 sudo apt-get install -y curl git
 sudo apt-get install -y zip gzip tar
 
+echo -e "\n--- Install mysql and phpmyadmin ---\n"
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password pass'
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password pass'
+sudo apt-get install -y mysql-server
+
+echo -e "\n--- Copy files ---\n"
+sudo cp /vagrant/go/src/gochapter/dist/files/parameters.ini.dist /vagrant/go/src/gochapter/parameters.ini
+
 echo -e "\n--- Install go ---\n"
 sudo wget https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
 sudo tar -C /usr/local -xzf go1.8.3.linux-amd64.tar.gz

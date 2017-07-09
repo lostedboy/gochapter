@@ -6,18 +6,11 @@ import (
 	"gochapter/config"
 	"googlemaps.github.io/maps"
 	"context"
+	"fmt"
 )
 
 func GetGoogleClient() (*maps.Client, error) {
-	var googleClient *maps.Client
-
-	arguments, err := config.Parse()
-
-	if err != nil {
-		return googleClient, errors.New("Google API key not set")
-	}
-
-	googleClient, err = maps.NewClient(maps.WithAPIKey(arguments.GoogleKey))
+	googleClient, err := maps.NewClient(maps.WithAPIKey(config.Parameters.GetGoogleKey()))
 
 	if err != nil {
 		return googleClient, errors.New("Google client can not be created")
@@ -97,8 +90,8 @@ func FetchDistanceMatrix(cities []string) ([]maps.DistanceMatrixElementsRow, err
 		Language : "en",
 	}
 
-	distanceMatrix, _ := googleClient.DistanceMatrix(context.Background(), &distanceMatrixRequest)
-
+	distanceMatrix, error := googleClient.DistanceMatrix(context.Background(), &distanceMatrixRequest)
+	fmt.Printf("%+v\n", error)
 	return distanceMatrix.Rows, nil
 }
 

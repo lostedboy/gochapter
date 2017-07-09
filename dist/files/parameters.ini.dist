@@ -1,0 +1,7 @@
+[mysql]
+database = ""
+username = ""
+passoword =""
+
+[google]
+key = ""

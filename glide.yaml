@@ -4,3 +4,8 @@ import:
   - package: github.com/jessevdk/go-flags
   - package: googlemaps.github.io/maps
   - package: golang.org/x/net/context
+  - package: github.com/GuiaBolso/darwin
+  - package: github.com/go-sql-driver/mysql
+  - package: github.com/go-ini/ini
+  - package: gopkg.in/testfixtures.v2
+  - package: gopkg.in/yaml.v2 # gopkg.in/testfixtures.v2 dependency
